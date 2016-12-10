@@ -221,7 +221,7 @@ class kardex extends fs_model {
       $contador = 0;
       foreach ($rango as $fecha) {
          $inicio_paso = new DateTime('NOW');
-         sleep(1);
+         usleep(50000);
          $plural = ($contador == 0) ? "" : "s";
          $p = ceil((($contador + 1) * 100) / $dias_proceso);
          $this->fecha_proceso = $fecha->format('Y-m-d');
@@ -240,8 +240,12 @@ class kardex extends fs_model {
             $time = $fin_paso->h . ':' . $fin_paso->i . ':' . $fin_paso->s;
             $tiempo_en_segundos = strtotime("1970-01-01 $time UTC");
             $tiempo_estimado = gmdate("H:i:s", ($dias_proceso * $tiempo_en_segundos));
-            $response = array('message' => 'Procesando <b>' . $fecha->format("Y-m-d") . '</b>, ' . ($contador + 1) . ' día' . $plural . ' de <b>' . $dias_proceso . '</b> procesado' . $plural . ' en ' . $tiempo_proceso->format('%H:%I:%S') . ', a las: ' . date("h:i:s", time()) . ' tiempo estimado total de proceso: <b>' . $tiempo_estimado . '</b>',
-               'progress' => $p);
+            $response = array('message' => 'Procesando <b>' . $fecha->format("Y-m-d") .
+                        '</b>, ' . ($contador + 1) . ' día' . $plural . ' de <b>' . 
+                        $dias_proceso . '</b> procesado' . $plural . ' en ' . 
+                        $tiempo_proceso->format('%H:%I:%S') . ', a las: ' . 
+                        date("h:i:s", time()) . ' tiempo estimado total de proceso: <b>' . 
+                        $tiempo_estimado . '</b>', 'progress' => $p);
             echo json_encode($response);
          }
          $contador++;
